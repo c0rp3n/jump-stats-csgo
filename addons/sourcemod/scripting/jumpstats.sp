@@ -711,7 +711,7 @@ public Action StatsDisplay(Handle hTimer)
             if(IsClientInGame(iClient) && g_baStats[iClient] && !g_bVote) {
                 if(IsPlayerAlive(iClient)) {
                     if(g_iDisplayEnabled == 3 || g_iDisplayEnabled == 1) {
-                        char sOutput[128];
+                        static char sOutput[128];
 
                         Format(sOutput, sizeof(sOutput), "  Speed: %.1f ups (%.1f)\n", GetPlayerSpeed(iClient), g_faPre[iClient]);
 
@@ -745,7 +745,7 @@ public Action StatsDisplay(Handle hTimer)
                         if(iSpecMode == SPECMODE_FIRSTPERSON || iSpecMode == SPECMODE_3RDPERSON) {
                             int iSpectatedClient = GetEntPropEnt(iClient, Prop_Send, "m_hObserverTarget");
                             if(iSpectatedClient > 1 && iSpectatedClient <= MaxClients) {
-                                char sOutput[256];
+                                static char sOutput[256];
                                 if(g_iaButtons[iSpectatedClient] & IN_FORWARD)
                                     Format(sOutput, sizeof(sOutput), "               [ W ]");
                                 else
@@ -928,10 +928,10 @@ public void AnnounceLastJump(int iClient)
         }
 
         if(iQuality > -1 && iQuality >= g_iMinimumAnnounceTier) {
-            char sNickname[MAX_NAME_LENGTH];
-            GetClientName(iClient, sNickname, sizeof(sNickname));
+            static char sNickname[MAX_NAME_LENGTH];
+            CGetClientName(iClient, sNickname, sizeof(sNickname));
 
-            char sArticle[3];
+            static char sArticle[3];
             if(FindCharInString("AEIOUaeiou", g_saJumpQualities[iQuality][0]) != -1)
                 Format(sArticle, sizeof(sArticle), "an");
             else
@@ -1274,7 +1274,7 @@ public Action OnRoundEnd(Event hEvent, const char[] sName, bool bDontBroadcast)
 
 stock float GetPlayerSpeed(int iClient)
 {
-    float faVelocity[3];
+    static float faVelocity[3];
     GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", faVelocity);
 
     float fSpeed;
@@ -1284,10 +1284,11 @@ stock float GetPlayerSpeed(int iClient)
     return fSpeed;
 }
 
-stock void CopyVector(float faOrigin[3], float faTarget[3])
+stock void CopyVector(const float faOrigin[3], float faTarget[3])
 {
-    for(int i = 0; i < 3; i++)
-        faTarget[i] = faOrigin[i];
+    faTarget[0] = faOrigin[0];
+    faTarget[1] = faOrigin[1];
+    faTarget[2] = faOrigin[2];
 }
 
 public void OnMapVoteStarted()
