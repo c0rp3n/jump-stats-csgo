@@ -4,13 +4,13 @@ on:
   push:
     branches: master
     paths:
-      - './color_conf.yaml'
-      - './addons/sourcemod/scripting/**'
+      - 'color_conf.yaml'
+      - 'addons/sourcemod/scripting/**.*'
   pull_request:
     branches: master
     paths:
-      - './color_conf.yaml'
-      - './addons/sourcemod/scripting/**'
+      - 'color_conf.yaml'
+      - 'addons/sourcemod/scripting/**.*'
 
 jobs:
   build:

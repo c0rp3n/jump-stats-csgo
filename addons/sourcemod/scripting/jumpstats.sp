@@ -166,7 +166,7 @@ char g_saJumpSoundPaths[][] =
 public Plugin myinfo =
 {
     name = "Jump Stats",
-    author = "ceLoFaN",
+    author = "ceLoFaN, c0rp3n",
     description = "Jump Stats for CS:GO",
     version = PLUGIN_VERSION,
     url = "steamcommunity.com/id/celofan"
