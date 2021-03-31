@@ -10,7 +10,7 @@
 #include <mapchooser>
 #define REQUIRE_PLUGIN
 #include <jumpstats>
-#include <csgocolors> // https://forums.alliedmods.net/showpost.php?p=2171971&postcount=175
+#include <colorlib>
 
 #pragma newdecls required
 
@@ -136,11 +136,11 @@ char g_saJumpSoundPaths[][] = {
 }
 
 // Jump Tier Color
-#define IMPRESSIVE_COLOR             "{LIGHTBLUE}"
-#define EXCELLENT_COLOR              "{BLUE}"
-#define OUTSTANDING_COLOR            "{DARKBLUE}"
-#define UNREAL_COLOR                 "{PURPLE}"
-#define GODLIKE_COLOR                "{RED}"
+#define IMPRESSIVE_COLOR             "{bluegrey}"
+#define EXCELLENT_COLOR              "{blue}"
+#define OUTSTANDING_COLOR            "{darkblue}"
+#define UNREAL_COLOR                 "{purple}"
+#define GODLIKE_COLOR                "{red}"
 
 //Spec Defines
 #define REFRESH_RATE                0.1
@@ -157,7 +157,7 @@ char g_saJumpSoundPaths[][] = {
 
 // In-game Team Defines
 #define JOINTEAM_RND       0
-#define JOINTEAM_SPEC      1    
+#define JOINTEAM_SPEC      1
 #define JOINTEAM_T         2
 #define JOINTEAM_CT        3
 
@@ -304,8 +304,8 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 public void OnPluginStart()
 {
     //ConVars here
-    CreateConVar("jumpstats_version", PLUGIN_VERSION, "Version of JumpStats", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_DONTRECORD|FCVAR_REPLICATED|FCVAR_NOTIFY);
-    g_hEnabled = CreateConVar("js_enabled", STATS_ENABLED, "Turns the jumpstats On/Off (0=OFF, 1=ON)", FCVAR_NOTIFY|FCVAR_PLUGIN, true, 0.0, true, 1.0);
+    CreateConVar("jumpstats_version", PLUGIN_VERSION, "Version of JumpStats", FCVAR_SPONLY|FCVAR_DONTRECORD|FCVAR_REPLICATED|FCVAR_NOTIFY);
+    g_hEnabled = CreateConVar("js_enabled", STATS_ENABLED, "Turns the jumpstats On/Off (0=OFF, 1=ON)", FCVAR_NOTIFY, true, 0.0, true, 1.0);
     g_hDisplayEnabled = CreateConVar("js_display_enabled", DISPLAY_ENABLED, "Turns the display On/Off by the player's state (0=OFF, 1=ALIVE, 2=DEAD, 3=ANY)", _, true, 0.0, true, 3.0)
     g_hDisplayDelayRoundstart = CreateConVar("js_display_delay_roundstart", DISPLAY_DELAY_ROUNDSTART, "Sets the roundstart delay before the display is shown.", _, true, 0.0);
     g_hBunnyHopCancelsAnnouncer = CreateConVar("js_bunnyhop_cancels_announcer", BUNNY_HOP_CANCELS_ANNOUNCER, "Decides if bunny hopping after a jump cancels the announcer.", _, true, 0.0, true, 1.0);
@@ -350,13 +350,13 @@ public void OnPluginStart()
     g_hLDHJOutstanding = CreateConVar("js_ldhj_outstanding", LDHJ_OUTSTANDING, "The distance required for an Outstanding Ladder DropHop Jump", _, true, 0.0);
     g_hLDHJUnreal = CreateConVar("js_ldhj_unreal", LDHJ_UNREAL, "The distance required for an Unreal Ladder DropHop Jump", _, true, 0.0);
     g_hLDHJGodlike = CreateConVar("js_ldhj_godlike", LDHJ_GODLIKE, "The distance required for a Godlike Ladder DropHop Jump", _, true, 0.0);
-    
+
     g_hLBHJImpressive = CreateConVar("js_lbhj_impressive", LBHJ_IMPRESSIVE, "The distance required for an Impressive Ladder BunnyHop Jump", _, true, 0.0);
     g_hLBHJExcellent = CreateConVar("js_lbhj_excellent", LBHJ_EXCELLENT, "The distance required for an Excellent Ladder BunnyHop Jump", _, true, 0.0);
     g_hLBHJOutstanding = CreateConVar("js_lbhj_outstanding", LBHJ_OUTSTANDING, "The distance required for an Outstanding Ladder BunnyHop Jump", _, true, 0.0);
     g_hLBHJUnreal = CreateConVar("js_lbhj_unreal", LBHJ_UNREAL, "The distance required for an Unreal Ladder BunnyHop Jump", _, true, 0.0);
     g_hLBHJGodlike = CreateConVar("js_lbhj_godlike", LBHJ_GODLIKE, "The distance required for a Godlike Ladder BunnyHop Jump", _, true, 0.0);
-    
+
     g_hImpressiveColor = CreateConVar("js_impressive_color", IMPRESSIVE_COLOR, "Impressive tire msg color");
     g_hExcellentColor = CreateConVar("js_excellent_color", EXCELLENT_COLOR, "Excellent tire msg color");
     g_hOutstandingColor = CreateConVar("js_outstanding_color", OUTSTANDING_COLOR, "Outstanding tire msg color");
@@ -415,34 +415,34 @@ public void OnPluginStart()
     HookConVarChange(g_hLBHJOutstanding, OnCvarChange);
     HookConVarChange(g_hLBHJUnreal, OnCvarChange);
     HookConVarChange(g_hLBHJGodlike, OnCvarChange);
-    
+
     HookConVarChange(g_hImpressiveColor, OnCvarChange);
     HookConVarChange(g_hExcellentColor, OnCvarChange);
     HookConVarChange(g_hOutstandingColor, OnCvarChange);
     HookConVarChange(g_hUnrealColor, OnCvarChange);
     HookConVarChange(g_hGodlikeColor, OnCvarChange);
-    
+
     //Hooked'em
     HookEvent("player_spawn", OnPlayerSpawn);
     HookEvent("round_start", OnRoundStart, EventHookMode_PostNoCopy);
     HookEvent("round_end", OnRoundEnd);
     HookEvent("player_death", OnPlayerDeath);
-    
+
     g_bEnabled = true;
-    
+
     RegConsoleCmd("togglestats", Command_ToggleStats);
     RegConsoleCmd("toggleannouncersounds", Command_ToggleSoundAnnouncer);
     AutoExecConfig(true, "jumpstats");
-    
+
     g_hToggleStatsCookie = RegClientCookie("ToggleStatsCookie", "Me want cookie!", CookieAccess_Private);
     g_hToggleAnnouncerSoundsCookie = RegClientCookie("ToogleAnnouncerSoundsCookie", "Me can't afford it.", CookieAccess_Private);
-    
+
     for(int iClient = 1; iClient <= MaxClients; iClient++) {
         if(IsClientInGame(iClient) && !IsFakeClient(iClient) && AreClientCookiesCached(iClient)) {
             OnClientCookiesCached(iClient);
         }
     }
-    
+
     g_hJumpForward = CreateGlobalForward("OnJump", ET_Ignore, Param_Cell, Param_Any, Param_Float);
 }
 
@@ -504,7 +504,7 @@ public void OnConfigsExecuted()
     g_faQualityDistances[JUMP_LBHJ][OUTSTANDING] = GetConVarFloat(g_hLBHJOutstanding);
     g_faQualityDistances[JUMP_LBHJ][UNREAL] = GetConVarFloat(g_hLBHJUnreal);
     g_faQualityDistances[JUMP_LBHJ][GODLIKE] = GetConVarFloat(g_hLBHJGodlike);
-    
+
     GetConVarString(g_hImpressiveColor, g_saQualityColor[IMPRESSIVE], 32);
     GetConVarString(g_hExcellentColor, g_saQualityColor[EXCELLENT], 32);
     GetConVarString(g_hOutstandingColor, g_saQualityColor[OUTSTANDING], 32);
@@ -552,7 +552,7 @@ public void OnCvarChange(ConVar hConVar, const char[] sOldValue, const char[] sN
         g_faQualityDistances[JUMP_LJ][UNREAL] = GetConVarFloat(hConVar); else
     if(StrEqual("js_lj_godlike", sConVarName))
         g_faQualityDistances[JUMP_LJ][GODLIKE] = GetConVarFloat(hConVar); else
-        
+
     if(StrEqual("js_impressive_color", sConVarName))
         GetConVarString(hConVar, g_saQualityColor[IMPRESSIVE], 32); else
     if(StrEqual("js_excellent_color", sConVarName))
@@ -568,7 +568,7 @@ public void OnCvarChange(ConVar hConVar, const char[] sOldValue, const char[] sN
 public void OnClientCookiesCached(int iClient)
 {
     char sCookieValue[8];
-    
+
     GetClientCookie(iClient, g_hToggleStatsCookie, sCookieValue, sizeof(sCookieValue));
     g_baStats[iClient] = !StrEqual(sCookieValue, "off");
 
@@ -576,7 +576,7 @@ public void OnClientCookiesCached(int iClient)
     g_baAnnouncerSounds[iClient] = !StrEqual(sCookieValue, "off");
 }
 
-public bool InterruptJump(int iClient, const char[] sMessage) 
+public bool InterruptJump(int iClient, const char[] sMessage)
 {
     if(iClient < 1 || iClient >= MaxClients)
         return false;
@@ -598,7 +598,7 @@ public bool InterruptJump(int iClient, const char[] sMessage)
 
 public int Native_InterruptJump(Handle hPlugin, int iNumParams)
 {
-    if(iNumParams != 1) 
+    if(iNumParams != 1)
         return false;
 
     int iClient = GetNativeCell(1);
@@ -612,23 +612,23 @@ public int Native_InterruptJump(Handle hPlugin, int iNumParams)
 public int Native_ClientUntrack(Handle plugin, int numParams)
 {
 	int iClient = GetNativeCell(1);
-	
+
 	g_baTracked[iClient] = false;
-	
+
 	InterruptJump(iClient, "[JS] Your jump was interrupted because you are no longer tracked.");
 }
 
 public int Native_ClientTrack(Handle plugin, int numParams)
 {
 	int iClient = GetNativeCell(1);
-	
+
 	g_baTracked[iClient] = true;
 }
 
 public int Native_ClientIsTracked(Handle plugin, int numParams)
 {
 	int iClient = GetNativeCell(1);
-	
+
 	return g_baTracked[iClient];
 }
 
@@ -732,7 +732,7 @@ public Action StatsDisplay(Handle hTimer)
                         // feature to add: for 0 bunnyhops: show LJ Strafes (x% sync)
                         //                 for 1 bunnyhop:  show BJ Strafes (x% sync)
                         //                 for 2 bunnyhops: show Number of bunnyhops and average speed / sync / distance covered
-                        
+
                         PrintHintText(iClient, sOutput);
                     }
                 }
@@ -809,7 +809,7 @@ public Action Command_ToggleStats(int iClient, int iArgs)
             SetClientCookie(iClient, g_hToggleStatsCookie, "off");
         else
             SetClientCookie(iClient, g_hToggleStatsCookie, "on");
-        
+
         PrintToChat(iClient, "\x04[JS] You have turned %s the jump stats.", g_baStats[iClient] ? "on" : "off");
     }
     return Plugin_Handled;
@@ -823,7 +823,7 @@ public Action Command_ToggleSoundAnnouncer(int iClient, int iArgs)
             SetClientCookie(iClient, g_hToggleAnnouncerSoundsCookie, "off");
         else
             SetClientCookie(iClient, g_hToggleAnnouncerSoundsCookie, "on");
-        
+
         PrintToChat(iClient, "\x04[JS] You have turned %s the announcer sounds.", g_baAnnouncerSounds[iClient] ? "on" : "off");
     }
     return Plugin_Handled;
@@ -917,7 +917,7 @@ public void AnnounceLastJump(int iClient)
         Call_PushCell(type);
         Call_PushFloat(g_faDistance[iClient]);
         Call_Finish();
-        
+
         int iQuality;
         for(iQuality = -1; iQuality < sizeof(g_saJumpQualities) - 1; iQuality++) {
             if(g_faDistance[iClient] < g_faQualityDistances[iType][iQuality + 1])
@@ -934,14 +934,14 @@ public void AnnounceLastJump(int iClient)
             else
                 Format(sArticle, sizeof(sArticle), "a");
 
-            if(g_iAnnounceToTeams) 
+            if(g_iAnnounceToTeams)
                 for(int iId = 1; iId < MaxClients; iId++) {
                     if(IsClientInGame(iId) && g_baStats[iId]) {
                         int iTeam = GetClientTeam(iId);
-                        if(g_iAnnounceToTeams == 4 || 
+                        if(g_iAnnounceToTeams == 4 ||
                            (iTeam > JOINTEAM_SPEC && (iTeam - 1 == g_iAnnounceToTeams || g_iAnnounceToTeams == 3))) {
                             // Announce in chat
-                            CPrintToChat(iId, "%s[JS] %s did %s %s %.3f units %s.", 
+                            CPrintToChat(iId, "%s[JS] %s did %s %s %.3f units %s.",
                                 g_saQualityColor[iQuality], sNickname, sArticle, g_saJumpQualities[iQuality], g_faDistance[iClient], g_saPrettyJumpTypes[iType]);
                             // Announce by sound
                             if(g_iAnnouncerSounds == 1 && g_baAnnouncerSounds[iId]) {
@@ -976,7 +976,7 @@ public void RecordJump(int iClient)
     float fDelta;
     int iTeam = GetClientTeam(iClient);
 
-    if((g_faLandCoord[iClient][2] >= 0.0 && g_faJumpCoord[iClient][2] >= 0.0) || 
+    if((g_faLandCoord[iClient][2] >= 0.0 && g_faJumpCoord[iClient][2] >= 0.0) ||
     (g_faLandCoord[iClient][2] <= 0.0 && g_faJumpCoord[iClient][2] <= 0.0))
         fDelta = FloatAbs(g_faLandCoord[iClient][2] - g_faJumpCoord[iClient][2]);
     else
@@ -1010,7 +1010,7 @@ public void RecordJump(int iClient)
         else
             g_iaJumpType[iClient] = JUMP_VERTICAL;
     }
-    else { 
+    else {
         g_iaJumpType[iClient] = JUMP_INVALID; // the player probably didn't intend a longjump so the display will show the last valid jump
     }
 
@@ -1057,17 +1057,17 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fa
 {
     if(!g_bEnabled || !g_baTracked[iClient])
         return Plugin_Continue;
-    
+
     // STATS START HERE
     // Record buttons pressed for displaying
     g_iaButtons[iClient] |= iButtons;
-    
+
     // Record X-axis mouse movement for displaying
     static float s_fLastXAngle[MAXPLAYERS + 1];
 
-    // Record current player position 
+    // Record current player position
     GetClientAbsOrigin(iClient, g_faPosition[iClient][CURRENT]);
-    
+
     // Recording angles every 9 frames for optimisation
     if(g_iaFrame[iClient] == 8) {
         // The following code is duplicated for optimisation purposes
@@ -1091,7 +1091,7 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fa
         }
         s_fLastXAngle[iClient] = faAngles[1]
     }
-    
+
     // Avoid multiple detection of the same jump
     g_iaFrame[iClient]++;
     if(g_iaFrame[iClient] == 9) {
@@ -1147,7 +1147,7 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fa
             g_baCanBhop[iClient] = true;
 
             // Update the context for the next jump (landing)
-            if(g_iaJumped[iClient] > JUMP_NONE) {  
+            if(g_iaJumped[iClient] > JUMP_NONE) {
                 if(g_iaJumped[iClient] == JUMP_LADJ) {
                     g_iaJumpContext[iClient] = LADDER_UNKNOWN;
                 }
@@ -1228,7 +1228,7 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fa
                     g_baAnnounceLastJump[iClient] = false;
                 }
             }
-        }     
+        }
     }
     else {
         if(g_iaStatus[iClient] > IN_AIR)
