@@ -39,16 +39,18 @@ jobs:
       - name: Install dependencies
         run: python3 -m pip install --upgrade pip setuptools wheel
 
-      - name: Download colorlib-gen
-        run: |
-          cd tools
-          git clone https://github.com/c0rp3n/colorlib-gen.git
+      - name: Clone colorlib-gen
+        uses: actions/checkout@v2
+        with:
+          repository: 'c0rp3n/colorlib-gen'
+          ref: 'master'
+          path: 'deps/colorlib-gen'
 
       - name: Install colorlib-gen
         run: |
-          cd tools/colorlib-gen
           pip install -r ./requirements.txt
           python3 ./setup.py install
+        working-directory: ./deps/colorlib-gen/
 
       - name: Generate colorlib_map.inc
         run: colorlib_gen -r --config "./color_conf.yaml" "addons/sourcemod/scripting/include/colorlib_map.inc"
