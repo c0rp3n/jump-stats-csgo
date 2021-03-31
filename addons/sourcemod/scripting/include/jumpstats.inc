@@ -8,16 +8,16 @@
  */
 enum JumpType
 {
-	Jump_None,
-	Jump_LJ,
-	Jump_BHJ,
-	Jump_MBHJ,
-	Jump_LadJ,
-	Jump_WHJ,
-	Jump_LDHJ,
-	Jump_LBHJ,
-	
-	Jump_End // Anchor for iteration
+    Jump_None,
+    Jump_LJ,
+    Jump_BHJ,
+    Jump_MBHJ,
+    Jump_LadJ,
+    Jump_WHJ,
+    Jump_LDHJ,
+    Jump_LBHJ,
+
+    Jump_End // Anchor for iteration
 };
 
 //Jump consts
@@ -56,7 +56,7 @@ native bool JumpStats_InterruptJump(int client);
  * @param client    Client index.
  * @noreturn
  */
-native void Jumpstats_ClientUntrack(int client);
+native void JumpStats_ClientUntrack(int client);
 
 /**
  * On tracking of client.
@@ -64,7 +64,7 @@ native void Jumpstats_ClientUntrack(int client);
  * @param client    Client index.
  * @noreturn
  */
-native void Jumpstats_ClientTrack(int client);
+native void JumpStats_ClientTrack(int client);
 
 /**
  * Returns if a certain player has tracked.
@@ -72,30 +72,30 @@ native void Jumpstats_ClientTrack(int client);
  * @param client    Client index.
  * @return          True if player has tracked, false otherwise.
  */
-native bool Jumpstats_ClientIsTracked(int client);
+native bool JumpStats_ClientIsTracked(int client);
 
 /**
  * Called when player do a jump.
  */
-forward void OnJump(int client, JumpType type, float distance);
+forward void JumpStats_OnJump(int client, JumpType type, float distance);
 
-public SharedPlugin:__pl_jumpstats = 
+public SharedPlugin:__pl_jumpstats =
 {
-	name = "jumpstats",
-	file = "jumpstats.smx",
+    name = "jumpstats",
+    file = "jumpstats.smx",
 #if defined REQUIRE_PLUGIN
-	required = 1,
+    required = 1,
 #else
-	required = 0
+    required = 0
 #endif
 };
 
 #if !defined REQUIRE_PLUGIN
 public __pl_jumpstats_SetNTVOptional()
 {
-	MarkNativeAsOptional("JumpStats_InterruptJump");
-	MarkNativeAsOptional("Jumpstats_ClientUntrack");
-	MarkNativeAsOptional("Jumpstats_ClientTrack");
-	MarkNativeAsOptional("Jumpstats_ClientIsTracked");
+    MarkNativeAsOptional("JumpStats_InterruptJump");
+    MarkNativeAsOptional("JumpStats_ClientUntrack");
+    MarkNativeAsOptional("JumpStats_ClientTrack");
+    MarkNativeAsOptional("JumpStats_ClientIsTracked");
 }
 #endif

@@ -19,7 +19,7 @@
 bool DISABLE_SOUNDS = false;
 
 // ConVar Defines
-#define PLUGIN_VERSION              "0.3.3"
+#define PLUGIN_VERSION              "0.4.0"
 #define STATS_ENABLED               "1"
 #define DISPLAY_ENABLED             "3"
 #define DISPLAY_DELAY_ROUNDSTART    "0"
@@ -290,14 +290,16 @@ char g_saJumpQualities[][] =
     "Godlike"
 };
 
-Handle g_hJumpForward;
+GlobalForward g_fwJumpForward;
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
+    g_fwJumpForward = new GlobalForward("JumpStats_OnJump", ET_Ignore, Param_Cell, Param_Any, Param_Float);
+
     CreateNative("JumpStats_InterruptJump", Native_InterruptJump);
-    CreateNative("Jumpstats_ClientUntrack", Native_ClientUntrack);
-    CreateNative("Jumpstats_ClientTrack", Native_ClientTrack);
-    CreateNative("Jumpstats_ClientIsTracked", Native_ClientIsTracked);
+    CreateNative("JumpStats_ClientUntrack", Native_ClientUntrack);
+    CreateNative("JumpStats_ClientTrack", Native_ClientTrack);
+    CreateNative("JumpStats_ClientIsTracked", Native_ClientIsTracked);
 
     RegPluginLibrary("jumpstats");
 
@@ -445,8 +447,6 @@ public void OnPluginStart()
             OnClientCookiesCached(iClient);
         }
     }
-
-    g_hJumpForward = CreateGlobalForward("OnJump", ET_Ignore, Param_Cell, Param_Any, Param_Float);
 }
 
 public void OnConfigsExecuted()
@@ -915,7 +915,7 @@ public void AnnounceLastJump(int iClient)
             case JUMP_LBHJ: type = Jump_LBHJ;
             default: type = Jump_None;
         }
-        Call_StartForward(g_hJumpForward);
+        Call_StartForward(g_fwJumpForward);
         Call_PushCell(iClient);
         Call_PushCell(type);
         Call_PushFloat(g_faDistance[iClient]);
