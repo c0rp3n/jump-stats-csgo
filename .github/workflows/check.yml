@@ -1,6 +1,13 @@
 name: Check files with ColorLib - Check
 
-on: [push, pull_request]
+on:
+  push:
+    branches: master
+  pull_request:
+    branches: master
+  paths:
+    - './color_conf.yaml'
+    - './addons/sourcemod/scripting/**'
 
 jobs:
   check:
