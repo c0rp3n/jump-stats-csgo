@@ -448,68 +448,68 @@ public void OnPluginStart()
 
 public void OnConfigsExecuted()
 {
-    g_bEnabled = GetConVarBool(g_hEnabled);
-    g_iDisplayEnabled = GetConVarInt(g_hDisplayEnabled);
-    g_fDisplayDelayRoundstart = GetConVarFloat(g_hDisplayDelayRoundstart);
-    g_bBunnyHopCancelsAnnouncer = GetConVarBool(g_hBunnyHopCancelsAnnouncer);
+    g_bEnabled = g_hEnabled.BoolValue;
+    g_iDisplayEnabled = g_hDisplayEnabled.IntValue;
+    g_fDisplayDelayRoundstart = g_hDisplayDelayRoundstart.FloatValue;
+    g_bBunnyHopCancelsAnnouncer = g_hBunnyHopCancelsAnnouncer.BoolValue;
     char sTier[32]
-    GetConVarString(g_hMinimumAnnounceTier, sTier, sizeof(sTier));
+    g_hMinimumAnnounceTier.GetString(sTier, sizeof(sTier));
     g_iMinimumAnnounceTier = GetQualityIndex(sTier);
-    g_iAnnounceToTeams = GetConVarInt(g_hAnnounceToTeams);
-    g_iRecordForTeams = GetConVarInt(g_hRecordForTeams);
+    g_iAnnounceToTeams = g_hAnnounceToTeams.IntValue;
+    g_iRecordForTeams = g_hRecordForTeams.IntValue;
     if(!DISABLE_SOUNDS) {
-        g_iAnnouncerSounds = GetConVarInt(g_hAnnouncerSounds);
+        g_iAnnouncerSounds = g_hAnnouncerSounds.IntValue;
     }
     else
         g_iAnnouncerSounds = 0;
 
-    g_faQualityDistances[JUMP_LJ][IMPRESSIVE] = GetConVarFloat(g_hLJImpressive);
-    g_faQualityDistances[JUMP_LJ][EXCELLENT] = GetConVarFloat(g_hLJExcellent);
-    g_faQualityDistances[JUMP_LJ][OUTSTANDING] = GetConVarFloat(g_hLJOutstanding);
-    g_faQualityDistances[JUMP_LJ][UNREAL] = GetConVarFloat(g_hLJUnreal);
-    g_faQualityDistances[JUMP_LJ][GODLIKE] = GetConVarFloat(g_hLJGodlike);
+    g_faQualityDistances[JUMP_LJ][IMPRESSIVE] = g_hLJImpressive.FloatValue;
+    g_faQualityDistances[JUMP_LJ][EXCELLENT] = g_hLJExcellent.FloatValue;
+    g_faQualityDistances[JUMP_LJ][OUTSTANDING] = g_hLJOutstanding.FloatValue;
+    g_faQualityDistances[JUMP_LJ][UNREAL] = g_hLJUnreal.FloatValue;
+    g_faQualityDistances[JUMP_LJ][GODLIKE] = g_hLJGodlike.FloatValue;
 
-    g_faQualityDistances[JUMP_BHJ][IMPRESSIVE] = GetConVarFloat(g_hBHJImpressive);
-    g_faQualityDistances[JUMP_BHJ][EXCELLENT] = GetConVarFloat(g_hBHJExcellent);
-    g_faQualityDistances[JUMP_BHJ][OUTSTANDING] = GetConVarFloat(g_hBHJOutstanding);
-    g_faQualityDistances[JUMP_BHJ][UNREAL] = GetConVarFloat(g_hBHJUnreal);
-    g_faQualityDistances[JUMP_BHJ][GODLIKE] = GetConVarFloat(g_hBHJGodlike);
+    g_faQualityDistances[JUMP_BHJ][IMPRESSIVE] = g_hBHJImpressive.FloatValue;
+    g_faQualityDistances[JUMP_BHJ][EXCELLENT] = g_hBHJExcellent.FloatValue;
+    g_faQualityDistances[JUMP_BHJ][OUTSTANDING] = g_hBHJOutstanding.FloatValue;
+    g_faQualityDistances[JUMP_BHJ][UNREAL] = g_hBHJUnreal.FloatValue;
+    g_faQualityDistances[JUMP_BHJ][GODLIKE] = g_hBHJGodlike.FloatValue;
 
-    g_faQualityDistances[JUMP_MBHJ][IMPRESSIVE] = GetConVarFloat(g_hMBHJImpressive);
-    g_faQualityDistances[JUMP_MBHJ][EXCELLENT] = GetConVarFloat(g_hMBHJExcellent);
-    g_faQualityDistances[JUMP_MBHJ][OUTSTANDING] = GetConVarFloat(g_hMBHJOutstanding);
-    g_faQualityDistances[JUMP_MBHJ][UNREAL] = GetConVarFloat(g_hMBHJUnreal);
-    g_faQualityDistances[JUMP_MBHJ][GODLIKE] = GetConVarFloat(g_hMBHJGodlike);
+    g_faQualityDistances[JUMP_MBHJ][IMPRESSIVE] = g_hMBHJImpressive.FloatValue;
+    g_faQualityDistances[JUMP_MBHJ][EXCELLENT] = g_hMBHJExcellent.FloatValue;
+    g_faQualityDistances[JUMP_MBHJ][OUTSTANDING] = g_hMBHJOutstanding.FloatValue;
+    g_faQualityDistances[JUMP_MBHJ][UNREAL] = g_hMBHJUnreal.FloatValue;
+    g_faQualityDistances[JUMP_MBHJ][GODLIKE] = g_hMBHJGodlike.FloatValue;
 
-    g_faQualityDistances[JUMP_LADJ][IMPRESSIVE] = GetConVarFloat(g_hLadJImpressive);
-    g_faQualityDistances[JUMP_LADJ][EXCELLENT] = GetConVarFloat(g_hLadJExcellent);
-    g_faQualityDistances[JUMP_LADJ][OUTSTANDING] = GetConVarFloat(g_hLadJOutstanding);
-    g_faQualityDistances[JUMP_LADJ][UNREAL] = GetConVarFloat(g_hLadJUnreal);
-    g_faQualityDistances[JUMP_LADJ][GODLIKE] = GetConVarFloat(g_hLadJGodlike);
+    g_faQualityDistances[JUMP_LADJ][IMPRESSIVE] = g_hLadJImpressive.FloatValue;
+    g_faQualityDistances[JUMP_LADJ][EXCELLENT] = g_hLadJExcellent.FloatValue;
+    g_faQualityDistances[JUMP_LADJ][OUTSTANDING] = g_hLadJOutstanding.FloatValue;
+    g_faQualityDistances[JUMP_LADJ][UNREAL] = g_hLadJUnreal.FloatValue;
+    g_faQualityDistances[JUMP_LADJ][GODLIKE] = g_hLadJGodlike.FloatValue;
 
-    g_faQualityDistances[JUMP_WHJ][IMPRESSIVE] = GetConVarFloat(g_hWHJImpressive);
-    g_faQualityDistances[JUMP_WHJ][EXCELLENT] = GetConVarFloat(g_hWHJExcellent);
-    g_faQualityDistances[JUMP_WHJ][OUTSTANDING] = GetConVarFloat(g_hWHJOutstanding);
-    g_faQualityDistances[JUMP_WHJ][UNREAL] = GetConVarFloat(g_hWHJUnreal);
-    g_faQualityDistances[JUMP_WHJ][GODLIKE] = GetConVarFloat(g_hWHJGodlike);
+    g_faQualityDistances[JUMP_WHJ][IMPRESSIVE] = g_hWHJImpressive.FloatValue;
+    g_faQualityDistances[JUMP_WHJ][EXCELLENT] = g_hWHJExcellent.FloatValue;
+    g_faQualityDistances[JUMP_WHJ][OUTSTANDING] = g_hWHJOutstanding.FloatValue;
+    g_faQualityDistances[JUMP_WHJ][UNREAL] = g_hWHJUnreal.FloatValue;
+    g_faQualityDistances[JUMP_WHJ][GODLIKE] = g_hWHJGodlike.FloatValue;
 
-    g_faQualityDistances[JUMP_LDHJ][IMPRESSIVE] = GetConVarFloat(g_hLDHJImpressive);
-    g_faQualityDistances[JUMP_LDHJ][EXCELLENT] = GetConVarFloat(g_hLDHJExcellent);
-    g_faQualityDistances[JUMP_LDHJ][OUTSTANDING] = GetConVarFloat(g_hLDHJOutstanding);
-    g_faQualityDistances[JUMP_LDHJ][UNREAL] = GetConVarFloat(g_hLDHJUnreal);
-    g_faQualityDistances[JUMP_LDHJ][GODLIKE] = GetConVarFloat(g_hLDHJGodlike);
+    g_faQualityDistances[JUMP_LDHJ][IMPRESSIVE] = g_hLDHJImpressive.FloatValue;
+    g_faQualityDistances[JUMP_LDHJ][EXCELLENT] = g_hLDHJExcellent.FloatValue;
+    g_faQualityDistances[JUMP_LDHJ][OUTSTANDING] = g_hLDHJOutstanding.FloatValue;
+    g_faQualityDistances[JUMP_LDHJ][UNREAL] = g_hLDHJUnreal.FloatValue;
+    g_faQualityDistances[JUMP_LDHJ][GODLIKE] = g_hLDHJGodlike.FloatValue;
 
-    g_faQualityDistances[JUMP_LBHJ][IMPRESSIVE] = GetConVarFloat(g_hLBHJImpressive);
-    g_faQualityDistances[JUMP_LBHJ][EXCELLENT] = GetConVarFloat(g_hLBHJExcellent);
-    g_faQualityDistances[JUMP_LBHJ][OUTSTANDING] = GetConVarFloat(g_hLBHJOutstanding);
-    g_faQualityDistances[JUMP_LBHJ][UNREAL] = GetConVarFloat(g_hLBHJUnreal);
-    g_faQualityDistances[JUMP_LBHJ][GODLIKE] = GetConVarFloat(g_hLBHJGodlike);
+    g_faQualityDistances[JUMP_LBHJ][IMPRESSIVE] = g_hLBHJImpressive.FloatValue;
+    g_faQualityDistances[JUMP_LBHJ][EXCELLENT] = g_hLBHJExcellent.FloatValue;
+    g_faQualityDistances[JUMP_LBHJ][OUTSTANDING] = g_hLBHJOutstanding.FloatValue;
+    g_faQualityDistances[JUMP_LBHJ][UNREAL] = g_hLBHJUnreal.FloatValue;
+    g_faQualityDistances[JUMP_LBHJ][GODLIKE] = g_hLBHJGodlike.FloatValue;
 
-    GetConVarString(g_hImpressiveColor, g_saQualityColor[IMPRESSIVE], 32);
-    GetConVarString(g_hExcellentColor, g_saQualityColor[EXCELLENT], 32);
-    GetConVarString(g_hOutstandingColor, g_saQualityColor[OUTSTANDING], 32);
-    GetConVarString(g_hUnrealColor, g_saQualityColor[UNREAL], 32);
-    GetConVarString(g_hGodlikeColor, g_saQualityColor[GODLIKE], 32);
+    g_hImpressiveColor.GetString(g_saQualityColor[IMPRESSIVE], 32);
+    g_hExcellentColor.GetString(g_saQualityColor[EXCELLENT], 32);
+    g_hOutstandingColor.GetString(g_saQualityColor[OUTSTANDING], 32);
+    g_hUnrealColor.GetString(g_saQualityColor[UNREAL], 32);
+    g_hGodlikeColor.GetString(g_saQualityColor[GODLIKE], 32);
 }
 
 public void OnCvarChange(ConVar hConVar, const char[] sOldValue, const char[] sNewValue)
@@ -518,51 +518,51 @@ public void OnCvarChange(ConVar hConVar, const char[] sOldValue, const char[] sN
     GetConVarName(hConVar, sConVarName, sizeof(sConVarName));
 
     if(StrEqual("js_enabled", sConVarName))
-        g_bEnabled = GetConVarBool(hConVar); else
+        g_bEnabled = hConVar.BoolValue; else
     if(StrEqual("js_display_enabled", sConVarName))
-        g_iDisplayEnabled = GetConVarInt(hConVar); else
+        g_iDisplayEnabled = hConVar.IntValue; else
     if(StrEqual("js_display_delay_roundstart", sConVarName))
-        g_fDisplayDelayRoundstart = GetConVarFloat(hConVar); else
+        g_fDisplayDelayRoundstart = hConVar.FloatValue; else
     if(StrEqual("js_bunnyhop_cancels_announcer", sConVarName))
-        g_bBunnyHopCancelsAnnouncer = GetConVarBool(hConVar); else
+        g_bBunnyHopCancelsAnnouncer = hConVar.BoolValue; else
     if(StrEqual("js_minimum_announce_tier", sConVarName)) {
         char sTier[32];
-        GetConVarString(hConVar, sTier, sizeof(sTier));
+        hConVar.GetString(sTier, sizeof(sTier));
         g_iMinimumAnnounceTier = GetQualityIndex(sTier);
     } else
     if(StrEqual("js_announce_to_teams", sConVarName))
-        g_iAnnounceToTeams = GetConVarInt(hConVar); else
+        g_iAnnounceToTeams = hConVar.IntValue; else
     if(StrEqual("js_record_for_teams", sConVarName))
-        g_iRecordForTeams = GetConVarInt(hConVar); else
+        g_iRecordForTeams = hConVar.IntValue; else
     if(StrEqual("js_announcer_sounds", sConVarName)) {
         if(!DISABLE_SOUNDS) {
-            g_iAnnouncerSounds = GetConVarInt(hConVar);
+            g_iAnnouncerSounds = hConVar.IntValue;
         }
         else
             g_iAnnouncerSounds = 0;
     } else
 
     if(StrEqual("js_lj_impressive", sConVarName))
-        g_faQualityDistances[JUMP_LJ][IMPRESSIVE] = GetConVarFloat(hConVar); else
+        g_faQualityDistances[JUMP_LJ][IMPRESSIVE] = hConVar.FloatValue; else
     if(StrEqual("js_lj_excellent", sConVarName))
-        g_faQualityDistances[JUMP_LJ][EXCELLENT] = GetConVarFloat(hConVar); else
+        g_faQualityDistances[JUMP_LJ][EXCELLENT] = hConVar.FloatValue; else
     if(StrEqual("js_lj_outstanding", sConVarName))
-        g_faQualityDistances[JUMP_LJ][OUTSTANDING] = GetConVarFloat(hConVar); else
+        g_faQualityDistances[JUMP_LJ][OUTSTANDING] = hConVar.FloatValue; else
     if(StrEqual("js_lj_unreal", sConVarName))
-        g_faQualityDistances[JUMP_LJ][UNREAL] = GetConVarFloat(hConVar); else
+        g_faQualityDistances[JUMP_LJ][UNREAL] = hConVar.FloatValue; else
     if(StrEqual("js_lj_godlike", sConVarName))
-        g_faQualityDistances[JUMP_LJ][GODLIKE] = GetConVarFloat(hConVar); else
+        g_faQualityDistances[JUMP_LJ][GODLIKE] = hConVar.FloatValue; else
 
     if(StrEqual("js_impressive_color", sConVarName))
-        GetConVarString(hConVar, g_saQualityColor[IMPRESSIVE], 32); else
+        hConVar.GetString(g_saQualityColor[IMPRESSIVE], 32); else
     if(StrEqual("js_excellent_color", sConVarName))
-        GetConVarString(hConVar, g_saQualityColor[EXCELLENT], 32); else
+        hConVar.GetString(g_saQualityColor[EXCELLENT], 32); else
     if(StrEqual("js_outstanding_color", sConVarName))
-        GetConVarString(hConVar, g_saQualityColor[OUTSTANDING], 32); else
+        hConVar.GetString(g_saQualityColor[OUTSTANDING], 32); else
     if(StrEqual("js_unreal_color", sConVarName))
-        GetConVarString(hConVar, g_saQualityColor[UNREAL], 32); else
+        hConVar.GetString(g_saQualityColor[UNREAL], 32); else
     if(StrEqual("js_godlike_color", sConVarName))
-        GetConVarString(hConVar, g_saQualityColor[GODLIKE], 32);
+        hConVar.GetString(g_saQualityColor[GODLIKE], 32);
 }
 
 public void OnClientCookiesCached(int iClient)
