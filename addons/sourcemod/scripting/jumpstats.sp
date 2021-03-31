@@ -614,25 +614,25 @@ public int Native_InterruptJump(Handle hPlugin, int iNumParams)
 
 public int Native_ClientUntrack(Handle plugin, int numParams)
 {
-	int iClient = GetNativeCell(1);
+    int iClient = GetNativeCell(1);
 
-	g_baTracked[iClient] = false;
+    g_baTracked[iClient] = false;
 
-	InterruptJump(iClient, "[JS] Your jump was interrupted because you are no longer tracked.");
+    InterruptJump(iClient, "[JS] Your jump was interrupted because you are no longer tracked.");
 }
 
 public int Native_ClientTrack(Handle plugin, int numParams)
 {
-	int iClient = GetNativeCell(1);
+    int iClient = GetNativeCell(1);
 
-	g_baTracked[iClient] = true;
+    g_baTracked[iClient] = true;
 }
 
 public int Native_ClientIsTracked(Handle plugin, int numParams)
 {
-	int iClient = GetNativeCell(1);
+    int iClient = GetNativeCell(1);
 
-	return g_baTracked[iClient];
+    return g_baTracked[iClient];
 }
 
 public void OnMapStart() {
