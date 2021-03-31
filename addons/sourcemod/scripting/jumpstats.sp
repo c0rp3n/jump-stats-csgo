@@ -12,6 +12,7 @@
 #include <jumpstats>
 #include <colorlib>
 
+#pragma semicolon 1
 #pragma newdecls required
 
 // Change DISABLE_SOUNDS to true in order to disable the announcer sounds and prevent them from downloading to players
@@ -127,13 +128,14 @@ bool DISABLE_SOUNDS = false;
 #define LBHJ_GODLIKE                 "266.0"
 
 // Jump Tier Sound Paths
-char g_saJumpSoundPaths[][] = {
+char g_saJumpSoundPaths[][] =
+{
     "*jumpstats/impressive.mp3",
     "*jumpstats/excellent.mp3",
     "*jumpstats/outstanding.mp3",
     "*jumpstats/unreal.mp3",
     "*jumpstats/godlike.mp3"
-}
+};
 
 // Jump Tier Color
 #define IMPRESSIVE_COLOR             "{bluegrey}"
@@ -279,13 +281,14 @@ int g_iaTendencyFluctuations[MAXPLAYERS + 1] = {0, ...};
 bool g_baTracked[MAXPLAYERS + 1] = {true, ...};
 
 //Jump consts
-char g_saJumpQualities[][] = {
+char g_saJumpQualities[][] =
+{
     "Impressive",
     "Excellent",
     "Outstanding",
     "Unreal",
     "Godlike"
-}
+};
 
 Handle g_hJumpForward;
 
@@ -306,7 +309,7 @@ public void OnPluginStart()
     //ConVars here
     CreateConVar("jumpstats_version", PLUGIN_VERSION, "Version of JumpStats", FCVAR_SPONLY|FCVAR_DONTRECORD|FCVAR_REPLICATED|FCVAR_NOTIFY);
     g_hEnabled = CreateConVar("js_enabled", STATS_ENABLED, "Turns the jumpstats On/Off (0=OFF, 1=ON)", FCVAR_NOTIFY, true, 0.0, true, 1.0);
-    g_hDisplayEnabled = CreateConVar("js_display_enabled", DISPLAY_ENABLED, "Turns the display On/Off by the player's state (0=OFF, 1=ALIVE, 2=DEAD, 3=ANY)", _, true, 0.0, true, 3.0)
+    g_hDisplayEnabled = CreateConVar("js_display_enabled", DISPLAY_ENABLED, "Turns the display On/Off by the player's state (0=OFF, 1=ALIVE, 2=DEAD, 3=ANY)", _, true, 0.0, true, 3.0);
     g_hDisplayDelayRoundstart = CreateConVar("js_display_delay_roundstart", DISPLAY_DELAY_ROUNDSTART, "Sets the roundstart delay before the display is shown.", _, true, 0.0);
     g_hBunnyHopCancelsAnnouncer = CreateConVar("js_bunnyhop_cancels_announcer", BUNNY_HOP_CANCELS_ANNOUNCER, "Decides if bunny hopping after a jump cancels the announcer.", _, true, 0.0, true, 1.0);
     g_hMinimumAnnounceTier = CreateConVar("js_minimum_announce_tier", MINIMUM_ANNOUNCE_TIER, "The minimum jump tier required for announcing.");
@@ -452,7 +455,7 @@ public void OnConfigsExecuted()
     g_iDisplayEnabled = g_hDisplayEnabled.IntValue;
     g_fDisplayDelayRoundstart = g_hDisplayDelayRoundstart.FloatValue;
     g_bBunnyHopCancelsAnnouncer = g_hBunnyHopCancelsAnnouncer.BoolValue;
-    char sTier[32]
+    char sTier[32];
     g_hMinimumAnnounceTier.GetString(sTier, sizeof(sTier));
     g_iMinimumAnnounceTier = GetQualityIndex(sTier);
     g_iAnnounceToTeams = g_hAnnounceToTeams.IntValue;
@@ -605,7 +608,7 @@ public int Native_InterruptJump(Handle hPlugin, int iNumParams)
     char sPluginName[64];
     GetPluginFilename(hPlugin, sPluginName, sizeof(sPluginName));
     char sInterruptMessage[100];
-    Format(sInterruptMessage, sizeof(sInterruptMessage), "[JS] Your jump was interrupted by a plugin called %s.", sPluginName)
+    Format(sInterruptMessage, sizeof(sInterruptMessage), "[JS] Your jump was interrupted by a plugin called %s.", sPluginName);
     return InterruptJump(iClient, sInterruptMessage);
 }
 
@@ -637,7 +640,7 @@ public void OnMapStart() {
     if(!DISABLE_SOUNDS) {
         for(int iTier = IMPRESSIVE; iTier <= GODLIKE; iTier++) {
             char sTemp[64];
-            Format(sTemp, sizeof(sTemp), "sound/%s", g_saJumpSoundPaths[iTier][1])
+            Format(sTemp, sizeof(sTemp), "sound/%s", g_saJumpSoundPaths[iTier][1]);
             AddFileToDownloadsTable(sTemp);
             AddToStringTable(FindStringTable("soundprecache"), g_saJumpSoundPaths[iTier]);
         }
@@ -1046,7 +1049,7 @@ public void GetPreJumpType(int iClient)
             g_iaJumped[iClient] = JUMP_WHJ;
         }
         else {
-            g_iaJumped[iClient] = JUMP_BHJ
+            g_iaJumped[iClient] = JUMP_BHJ;
         }
     }
     else
@@ -1089,7 +1092,7 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fa
             else if(s_fLastXAngle[iClient] > faAngles[1])
                 g_iaMouseDisplay[iClient] |= MOUSE_RIGHT;
         }
-        s_fLastXAngle[iClient] = faAngles[1]
+        s_fLastXAngle[iClient] = faAngles[1];
     }
 
     // Avoid multiple detection of the same jump
