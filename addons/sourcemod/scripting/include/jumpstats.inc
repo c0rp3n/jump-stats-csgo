@@ -21,7 +21,8 @@ enum JumpType
 };
 
 //Jump consts
-stock const char g_saJumpTypes[][] = {
+stock const char g_saJumpTypes[][] =
+{
     "None",
     "LJ",
     "BHJ",
@@ -30,8 +31,9 @@ stock const char g_saJumpTypes[][] = {
     "WHJ",
     "LDHJ",
     "LBHJ"
-}
-stock const char g_saPrettyJumpTypes[][] = {
+};
+stock const char g_saPrettyJumpTypes[][] =
+{
     "None",
     "Long Jump",
     "BunnyHop Jump",
@@ -40,7 +42,7 @@ stock const char g_saPrettyJumpTypes[][] = {
     "WeirdHop Jump",
     "Ladder DropHop Jump",
     "Ladder BunnyHop Jump"
-}
+};
 
 /**
  * @brief Interrupts a player's current jump stats recording.
@@ -79,7 +81,7 @@ native bool JumpStats_ClientIsTracked(int client);
  */
 forward void JumpStats_OnJump(int client, JumpType type, float distance);
 
-public SharedPlugin:__pl_jumpstats =
+public SharedPlugin __pl_jumpstats =
 {
     name = "jumpstats",
     file = "jumpstats.smx",
@@ -91,7 +93,7 @@ public SharedPlugin:__pl_jumpstats =
 };
 
 #if !defined REQUIRE_PLUGIN
-public __pl_jumpstats_SetNTVOptional()
+public void __pl_jumpstats_SetNTVOptional()
 {
     MarkNativeAsOptional("JumpStats_InterruptJump");
     MarkNativeAsOptional("JumpStats_ClientUntrack");
