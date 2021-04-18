@@ -130,11 +130,11 @@ bool DISABLE_SOUNDS = false;
 // Jump Tier Sound Paths
 char g_saJumpSoundPaths[][] =
 {
-    "*jumpstats/impressive.mp3",
-    "*jumpstats/excellent.mp3",
-    "*jumpstats/outstanding.mp3",
-    "*jumpstats/unreal.mp3",
-    "*jumpstats/godlike.mp3"
+    "jumpstats/impressive.mp3",
+    "jumpstats/excellent.mp3",
+    "jumpstats/outstanding.mp3",
+    "jumpstats/unreal.mp3",
+    "jumpstats/godlike.mp3"
 };
 
 // Jump Tier Color
@@ -165,11 +165,11 @@ char g_saJumpSoundPaths[][] =
 
 public Plugin myinfo =
 {
-    name = "Jump Stats",
-    author = "ceLoFaN, c0rp3n",
+    name        = "Jump Stats",
+    author      = "ceLoFaN, c0rp3n",
     description = "Jump Stats for CS:GO",
-    version = PLUGIN_VERSION,
-    url = "steamcommunity.com/id/celofan"
+    version     = PLUGIN_VERSION,
+    url         = "steamcommunity.com/id/celofan"
 };
 
 /*\----ConVars----------------------------------------\*/
@@ -579,7 +579,7 @@ public void OnClientCookiesCached(int iClient)
     g_baAnnouncerSounds[iClient] = !StrEqual(sCookieValue, "off");
 }
 
-public bool InterruptJump(int iClient, const char[] sMessage)
+bool InterruptJump(int iClient, const char[] sMessage)
 {
     if(iClient < 1 || iClient >= MaxClients)
         return false;
@@ -889,14 +889,14 @@ public Action OnPlayerDeath(Event hEvent, const char[] sName, bool bDontBroadcas
     return Plugin_Continue;
 }
 
-public int GetQualityIndex(const char[] sQuality)
+int GetQualityIndex(const char[] sQuality)
 {
     int iIndex;
     for(iIndex = 0; strcmp(sQuality, g_saJumpQualities[iIndex], false); iIndex++) {}
     return iIndex;
 }
 
-public void AnnounceLastJump(int iClient)
+void AnnounceLastJump(int iClient)
 {
     if(!g_baStats[iClient])
         return;
@@ -973,7 +973,7 @@ public Action AnnounceLastJumpDelayed(Handle hTimer, any iClient)
         AnnounceLastJump(iClient);
 }
 
-public void RecordJump(int iClient)
+void RecordJump(int iClient)
 {
     GetClientAbsOrigin(iClient, g_faLandCoord[iClient]);
     float fDelta;
@@ -1033,7 +1033,7 @@ public void RecordJump(int iClient)
     }
 }
 
-public void GetPreJumpType(int iClient)
+void GetPreJumpType(int iClient)
 {
     if(g_iaBhops[iClient] == 1) {
         if(g_iaJumpContext[iClient] == LADDER_DROPPED) {
@@ -1122,6 +1122,10 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fa
             InterruptJump(iClient, "[JS] Your jump was interrupted because you are not in-air or walking.");
         if(InWater(iClient))
             InterruptJump(iClient, "[JS] Your jump was interrupted because you are in water.");
+        if (HasNoneStandardSpeed(iClient))
+            InterruptJump(iClient, "[JS] Your jump was interrupted because you have none standard movement speed.");
+        if (HasExoJump(iClient))
+            InterruptJump(iClient, "[JS] Your jump was interrupted because you are using Exo Jump.");
         // Interrupt the jump recording if the player is not constantly descending or ascending
         float fHeightDifference = g_faPosition[iClient][CURRENT][2] - g_faPosition[iClient][LAST][2];
         if(fHeightDifference < 0.0)
@@ -1272,7 +1276,7 @@ public Action OnRoundEnd(Event hEvent, const char[] sName, bool bDontBroadcast)
     return Plugin_Continue;
 }
 
-stock float GetPlayerSpeed(int iClient)
+float GetPlayerSpeed(int iClient)
 {
     static float faVelocity[3];
     GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", faVelocity);
@@ -1284,7 +1288,7 @@ stock float GetPlayerSpeed(int iClient)
     return fSpeed;
 }
 
-stock void CopyVector(const float faOrigin[3], float faTarget[3])
+void CopyVector(const float faOrigin[3], float faTarget[3])
 {
     faTarget[0] = faOrigin[0];
     faTarget[1] = faOrigin[1];
@@ -1315,4 +1319,14 @@ public Action CheckVoteEnd(Handle hTimer)
 bool InWater(int iEntity)
 {
     return ( GetEntProp(iEntity, Prop_Send, "m_fFlags") & FL_INWATER ) != 0;
+}
+
+bool HasNoneStandardSpeed(int iEntity)
+{
+    return GetEntPropFloat(iEntity, Prop_Send, "m_flLaggedMovementValue") != 1.0;
+}
+
+bool HasExoJump(int iEntity)
+{
+    return GetEntProp(iEntity, Prop_Send, "m_passiveItems", 1, 1) != 0;
 }
